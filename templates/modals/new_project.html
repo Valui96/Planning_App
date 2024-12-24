@@ -1,28 +1,31 @@
-<!-- New Project Modal -->
-<div class="modal fade" id="newProjectModal" tabindex="-1">
+<div class="modal fade" id="newProjectModal" tabindex="-1"></div>
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Create New Project</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
+        <div class="modal-content bg-white rounded-lg shadow-xl">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h5 class="text-xl font-semibold">New Project</h5>
+                    <button type="button" class="text-gray-400 hover:text-gray-500" data-bs-dismiss="modal">×</button>
+                </div>
                 <form action="{{ url_for('add_project') }}" method="POST">
-                    <div class="mb-3">
-                        <label for="projectName" class="form-label">Project Name</label>
-                        <input type="text" class="form-control" id="projectName" name="name" required>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Project Name</label>
+                            <input type="text" name="name" class="w-full px-3 py-2 border rounded-md" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                            <textarea name="description" rows="3" class="w-full px-3 py-2 border rounded-md"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+                            <input type="text" name="tags" class="w-full px-3 py-2 border rounded-md" 
+                                   placeholder="e.g., urgent, personal, coding">
+                            <p class="mt-1 text-sm text-gray-500">Separate tags with commas</p>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+                            Create Project
+                        </button>
                     </div>
-                    <div class="mb-3">
-                        <label for="projectDescription" class="form-label">Description</label>
-                        <textarea class="form-control" id="projectDescription" name="description" rows="3"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="projectTags" class="form-label">Tags (comma-separated)</label>
-                        <input type="text" class="form-control" id="projectTags" name="tags" 
-                               placeholder="e.g., urgent, personal, coding">
-                        <div class="form-text">Separate tags with commas</div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Create Project</button>
                 </form>
             </div>
         </div>

@@ -1,0 +1,15 @@
+<div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+    <h3 class="text-xl font-semibold text-gray-800 mb-3">{{ name }}</h3>
+    <p class="text-gray-600 mb-4 line-clamp-2">{{ project.description }}</p>
+    <div class="flex flex-wrap gap-2 mb-4">
+        {% if project.status == 'active' %}
+            <span class="px-3 py-1 text-sm bg-green-100 text-green-800 rounded-full font-medium">Active</span>
+        {% endif %}
+        {% for tag in project.tags %}
+            <span class="px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded-full font-medium">{{ tag }}</span>
+        {% endfor %}
+    </div>
+    <a href="{{ url_for('view_project', name=name) }}" class="mt-auto inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+        View Details
+    </a>
+</div>

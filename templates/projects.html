@@ -1,94 +1,42 @@
 {% extends "base.html" %}
 
-{% block title %}All Projects - Project Manager{% endblock %}
+{% block title %}All Projects{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row mb-4">
-        <div class="col">
-            <h1>All Projects</h1>
-        </div>
-        <div class="col-auto">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newProjectModal">
-                New Project
-            </button>
-        </div>
-    </div>
+<div class="space-y-6">
+   <!-- Header -->
+   <div class="flex justify-between items-center">
+       <h1 class="text-3xl font-bold text-white">All Projects</h1>
+       <button type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" 
+               data-bs-toggle="modal" data-bs-target="#newProjectModal">
+           New Project
+       </button>
+   </div>
 
-    <!-- Tag Filter -->
-    <div class="row mb-4">
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Filter by Tags</h5>
-                    <div id="tagCloud" class="mb-2">
-                        {% set all_tags = [] %}
-                        {% for project in projects.values() %}
-                            {% for tag in project.tags %}
-                                {% if tag not in all_tags %}
-                                    {% set _ = all_tags.append(tag) %}
-                                {% endif %}
-                            {% endfor %}
-                        {% endfor %}
-                        {% for tag in all_tags %}
-                            <a href="?tag={{ tag }}" class="badge bg-secondary text-decoration-none me-1">{{ tag }}</a>
-                        {% endfor %}
-                    </div>
-                    {% if request.args.get('tag') %}
-                        <a href="{{ url_for('projects') }}" class="btn btn-sm btn-outline-secondary">Clear Filter</a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
+   <!-- Tag Filter -->
+   <div class="bg-white rounded-lg shadow-md p-6">
+       <h2 class="text-lg font-semibold mb-4">Filter by Tags</h2>
+       <div class="flex flex-wrap gap-2 mb-4">
+           {% for tag in all_tags %}
+               <a href="?tag={{ tag }}" class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200">
+                   {{ tag }}
+               </a>
+           {% endfor %}
+       </div>
+       {% if request.args.get('tag') %}
+           <a href="{{ url_for('projects') }}" class="text-sm text-blue-500 hover:text-blue-600">Clear Filter</a>
+       {% endif %}
+   </div>
 
-    <!-- Projects List -->
-    <div class="row">
-        {% for name, project in projects.items() %}
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="card project-card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">{{ name }}</h5>
-                    <p class="card-text text-muted">{{ project.description }}</p>
-                    <div class="mb-2">
-                        {% if project.status == 'active' %}
-                            <span class="badge bg-success">Active</span>
-                        {% elif project.status == 'on_hold' %}
-                            <span class="badge bg-warning">On Hold</span>
-                        {% elif project.status == 'completed' %}
-                            <span class="badge bg-info">Completed</span>
-                        {% endif %}
-                        {% if project.type == 'idea' %}
-                            <span class="badge bg-secondary">Idea</span>
-                        {% endif %}
-                    </div>
-                    <div class="mb-2">
-                        {% for tag in project.tags %}
-                            <span class="badge bg-secondary">{{ tag }}</span>
-                        {% endfor %}
-                    </div>
-                    {% set completed = project.tasks|selectattr('completed')|list|length %}
-                    {% set total = project.tasks|length %}
-                    {% if total > 0 %}
-                        <div class="progress progress-small mb-2">
-                            <div class="progress-bar" style="width: {{ (completed / total * 100)|round }}%"></div>
-                        </div>
-                        <small class="text-muted">{{ completed }}/{{ total }} tasks completed</small>
-                    {% endif %}
-                    <div class="mt-3">
-                        <a href="{{ url_for('view_project', name=name) }}" class="btn btn-sm btn-outline-primary">View Details</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% else %}
-        <div class="col">
-            <p class="text-muted">No projects found.</p>
-        </div>
-        {% endfor %}
-    </div>
+   <!-- Projects Grid -->
+   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+       {% for name, project in projects.items() %}
+           {% include "components/project_card.html" %}
+       {% else %}
+       <p class="text-gray-200">No projects found.</p>
+       {% endfor %}
+   </div>
 </div>
 
-<!-- Include New Project Modal here (copy from index.html) -->
 {% include "modals/new_project.html" %}
 {% endblock %}
